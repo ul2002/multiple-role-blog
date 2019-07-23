@@ -75,12 +75,19 @@ $ docker exec -it blog php artisan db:seed
 Check api documentation at https://multiple-role-blog.herokuapp.com .<br/>
 You could also check it in the folder ./documentations/
 
+###Initial Accounts 
+
+Admin (email: admin@blog.test , password: secret)
+Manager (email: manager@blog.test , password: secret)
+Member (email: member1@blog.test , password: secret)
+
 ### base url
 
 ```
  localhost/api/v1/
 
 ```
+
 
 ```
 # Authors
