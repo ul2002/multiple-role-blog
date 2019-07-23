@@ -23,6 +23,16 @@ class UserTableSeeder extends Seeder
          ]);
 
         DB::table('users')->insert([
+             'firstname' => 'Manager',
+             'lastname' => 'Manager',
+             'email' => 'manager@blog.test',
+             'password' => bcrypt('secret'),
+             'phone' => '+237698196943',
+             'role' => 'MANAGER',
+             'gender' => 'female'
+         ]);
+
+        DB::table('users')->insert([
              'firstname' => 'member1',
              'lastname' => 'member1',
              'email' => 'member1@blog.test',
