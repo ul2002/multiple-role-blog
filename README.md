@@ -72,7 +72,8 @@ $ docker exec -it blog php artisan db:seed
 
 ## Docummentation
 
-check api documentation in ./documenations/index.html
+check api documentation at https://multiple-role-blog.herokuapp.com
+you could also check it in the folder ./documentations/
 
 ### base url
 
