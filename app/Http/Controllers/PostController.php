@@ -17,14 +17,14 @@ use App\Http\Resources\PostCollectiion as PostCollectiionResource;
 class PostController extends Controller
 {
     /**
+     * @var user
+     */
+    protected $user;
+
+    /**
      * @var postRepository
      */
     protected $postRepository;
-
-    /**
-     * @var User
-     */
-    protected $user;
 
 
     /**
@@ -44,13 +44,11 @@ class PostController extends Controller
      */
     public function index()
     {
+        $this->authorize('view', Post::class);
+        $posts = $this->postRepository->all($this->user);
 
-     $posts = $this->postRepository->all();
-     //var_dump($Posts); die();
-     return   new PostCollectiionResource($posts);
-
+        return new PostCollectiionResource($posts);
     }
-
   
 
     /**
@@ -61,12 +59,12 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
- 
+        $this->authorize('create', Post::class);
         $input = $request->all();
         $input['user_id']=  $this->user->id;
         $post = $this->postRepository->store($input);
-        return response()->json(['id'=>$post->id],self::HTTP_SUCCESS);
 
+        return response()->json(['id'=>$post->id],self::HTTP_SUCCESS);
     }
 
     /**
@@ -78,11 +76,11 @@ class PostController extends Controller
     public function show($id)
     {
         $post = $this->postRepository->getById($id);
+        $this->authorize('viewSingle', new Post(['user_id' => isset($post) ? $post->user_id : null]));
 
         if(is_null($post)) {
            return response()->json('Invalid object id',self::HTTP_NOTFOUND);
         }
-
 
         return  new PostResource($post);
     }
@@ -96,9 +94,12 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(PostRequest $request, $id)
-    {
+    { 
         $input = $request->all();
+        $post = $this->postRepository->getById($id);
+        $this->authorize('update', new Post(['user_id' => isset($post) ? $post->user_id : null]));
         $post = $this->postRepository->update($id,$input);
+
          if( is_null($post) ) {
             return response()->json('Invalid object id',self::HTTP_NOTFOUND);
         }
@@ -114,10 +115,14 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post= $this->postRepository->delete($id);
+        $post = $this->postRepository->getById($id);
+        $this->authorize('delete', new Post(['user_id' => isset($post) ? $post->user_id : null]));
+        $post = $this->postRepository->delete($id);
+
         if( is_null($post) ) {
             return response()->json('Invalid object id',self::HTTP_NOTFOUND);
         }
+
         return response()->json('the Post has been deleted',self::HTTP_SUCCESS);
     }
 }

@@ -3,13 +3,16 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Handler extends ExceptionHandler
 {
    
-    const HTTP_FORBIDDEN         = 403;
+    const HTTP_FORBIDDEN  = 403;
+    const HTTP_ERROR  = 500;
+    const HTTP_VALIDATION  = 422;
 
     /**
      * A list of the exception types that are not reported.
@@ -66,9 +69,20 @@ class Handler extends ExceptionHandler
                return response()->json(['error' => 'Token not provided'], self::HTTP_FORBIDDEN);
            }
            if ($exception instanceof \Illuminate\Validation\ValidationException) { 
-            return new JsonResponse($exception->errors(), 422); 
+            return new JsonResponse($exception->errors(), self::HTTP_VALIDATION); 
            }
+
         }
+
+        if ($exception instanceof AuthorizationException) {
+            return response()->json(['error' => 'This action is unauthorized'], self::HTTP_FORBIDDEN);
+        }
+        if ($exception instanceof
+                \Tymon\JWTAuth\Exceptions\JWTException) {
+            return response()->json(['error' => 'An error occurred on jwt process'], self::HTTP_ERROR);
+        }
+
+        
 
         return parent::render($request, $exception);
     }

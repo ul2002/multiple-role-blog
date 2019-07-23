@@ -30,9 +30,10 @@ trait BaseRepository
     /**
      * Get all the records
      *
+     * @param  Mixed $criteria
      * @return array Model
      */
-    public function all()
+    public function all($criteria = null )
     {
         return $this->model->get();
     }

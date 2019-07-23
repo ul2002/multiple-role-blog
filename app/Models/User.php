@@ -10,6 +10,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    const ADMIN = 'ADMIN';
+    const MANAGER = 'MANAGER';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -83,6 +86,27 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    
+    /**
+     * Return true if user is an admin
+     *
+     * @return true
+     */
+    public function isSuperAdmin()
+    {
+       
+       return $this->role == self::ADMIN;
+    }
+
+    /**
+     * Return true if user is a manger
+     *
+     * @return true
+     */
+    public function isManager()
+    {
+       return $this->role == self::MANAGER;
     }
 
 

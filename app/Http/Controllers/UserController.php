@@ -36,11 +36,10 @@ class UserController extends Controller
      */
     public function index()
     {
-
+     $this->authorize('view', User::class);
      $users = $this->userRepository->all();
-     //var_dump($Users); die();
-     return   new UserCollectiionResource($users);
 
+     return   new UserCollectiionResource($users);
     }
 
   
@@ -53,11 +52,11 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
- 
+        $this->authorize('create', User::class);
         $input = $request->all();
         $user = $this->userRepository->store($input);
-        return response()->json(['id'=>$user->id],self::HTTP_SUCCESS);
 
+        return response()->json(['id'=>$user->id],self::HTTP_SUCCESS);
     }
 
     /**
@@ -69,11 +68,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user = $this->userRepository->getById($id);
+        $this->authorize('viewSingle', new User(['id' => isset($user) ? $user->id : null]));
 
         if(is_null($user)) {
            return response()->json('Invalid object id',self::HTTP_NOTFOUND);
         }
-
 
         return  new UserResource($user);
     }
@@ -89,7 +88,10 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         $input = $request->all('firstname','lastname','phone','role','gender');
+        $user = $this->userRepository->getById($id);
+        $this->authorize('update', new User(['id' => isset($user) ? $user->id : null]));
         $user = $this->userRepository->update($id,$input);
+
          if( is_null($user) ) {
             return response()->json('Invalid object id',self::HTTP_NOTFOUND);
         }
@@ -105,10 +107,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user= $this->userRepository->delete($id);
+        $user = $this->userRepository->getById($id);
+        $this->authorize('delete', new User(['id' => isset($user) ? $user->id : null]));
+        $user = $this->userRepository->delete($id);
+
         if( is_null($user) ) {
             return response()->json('Invalid object id',self::HTTP_NOTFOUND);
         }
+
         return response()->json('the User has been deleted',self::HTTP_SUCCESS);
     }
 }
