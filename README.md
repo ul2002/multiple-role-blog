@@ -16,11 +16,18 @@ $ cd multiple-role-blog
 $ cp .env.example .env
 ```
 
-install dependencies
+installing dependencies
 ```
 composer install
 
 ```
+generating key
+
+```
+php artisan key:generate
+
+```
+
 run migration
 ```
 php artisan migrate
