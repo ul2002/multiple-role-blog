@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+   "id": "http://localhost/api-doc/schemas/",
+    "type": "array",
+    "description": "The list of posts.",
+    "items": {
+      "type": "object",
+      "properties": {
+         "id" : {
+          "type": "string",
+          "description": "Post id"
+        },
+         "title": {
+          "type": "string",
+          "description": "Post title"
+        },
+        "description" : {
+          "type": "string",
+          "description": "Post description"
+        }
+      },
+     "required": [ "id","title", "description"]
+    }
+    
+}

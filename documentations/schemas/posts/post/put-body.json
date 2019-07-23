@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://localhost/api-doc/schemas/",
+  "type": "object",
+  "properties": {
+    "title" : {
+      "type": "string",
+      "description": "Post title"
+    },
+     "description" : {
+      "type": "string",
+      "description": "Post description"
+    }
+  }
+}

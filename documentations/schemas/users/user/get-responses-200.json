@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://localhost/api-doc/schemas/",
+  "type": "object",
+  "properties": {
+     "id": {
+      "type": "string",
+      "description": "User id"
+    },
+     "email": {
+      "type": "string",
+      "description": "User email address",
+      "format": "email"
+    },
+    "firstname" : {
+      "type": "string",
+      "description": "User name"
+    },
+     "lastname" : {
+      "type": "string",
+      "description": "User name"
+    } ,
+    "phone" : {
+      "type": "string",
+      "description": "User phone"
+    },
+    "role" : {
+      "type": "string",
+       "enum": ["MEMBER", "MANAGER", "ADMIN"],
+      "description": "User role"
+    },
+    "gender" : {
+      "type": "string",
+      "enum": ["male", "female"],
+      "description": "User gender"
+    }    
+  },
+  "required": [ "id","firstname", "lastname", "email", "role", "gender", "phone"]
+}
